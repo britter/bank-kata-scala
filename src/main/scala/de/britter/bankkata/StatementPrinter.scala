@@ -16,12 +16,8 @@
 
 package de.britter.bankkata
 
-class TransactionRepository {
+class StatementPrinter {
 
-  def deposit(amount: Int): Unit = ???
-
-  def withdraw(amount: Int): Unit = ???
-
-  def allTransactions(): List[Transaction] = ???
+  def printLines(transactions: List[Transaction]): Unit = ???
 
 }

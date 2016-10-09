@@ -16,11 +16,13 @@
 
 package de.britter.bankkata
 
-class Account(val transactionRepository: TransactionRepository) {
+class Account(transactionRepository: TransactionRepository,
+              statementPrinter: StatementPrinter) {
 
   def deposit(amount: Int): Unit = transactionRepository.deposit(amount)
 
   def withdraw(amount: Int): Unit = transactionRepository.withdraw(amount)
 
-  def printStatement(): Unit = {}
+  def printStatement(): Unit =
+    statementPrinter.printLines(transactionRepository.allTransactions())
 }

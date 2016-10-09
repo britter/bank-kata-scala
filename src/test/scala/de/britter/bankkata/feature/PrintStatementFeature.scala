@@ -16,7 +16,12 @@
 
 package de.britter.bankkata.feature
 
-import de.britter.bankkata.{ Account, Console, TransactionRepository }
+import de.britter.bankkata.{
+  Account,
+  Console,
+  StatementPrinter,
+  TransactionRepository
+}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.FlatSpec
 
@@ -27,7 +32,8 @@ class PrintStatementFeature extends FlatSpec with MockFactory {
   val console = stub[Console]
 
   val transactionRepository = new TransactionRepository()
-  val account               = new Account(transactionRepository)
+  val statementPrinter      = new StatementPrinter()
+  val account               = new Account(transactionRepository, statementPrinter)
 
   it should "print statements" in {
     account.deposit(1000)

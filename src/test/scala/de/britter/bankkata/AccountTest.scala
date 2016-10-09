@@ -24,8 +24,11 @@ class AccountTest extends FlatSpec with MockFactory {
   behavior of "an Account"
 
   val transactionRepository = stub[TransactionRepository]
+  val statementPrinter      = stub[StatementPrinter]
 
-  val account = new Account(transactionRepository)
+  val transactions = List(Transaction())
+
+  val account = new Account(transactionRepository, statementPrinter)
 
   it should "store a deposit transaction" in {
     account.deposit(100)
@@ -37,5 +40,13 @@ class AccountTest extends FlatSpec with MockFactory {
     account.withdraw(100)
 
     (transactionRepository.withdraw _).verify(100)
+  }
+
+  it should "print all transactions" in {
+    (transactionRepository.allTransactions _).when().returns(transactions)
+
+    account.printStatement()
+
+    (statementPrinter.printLines _).verify(transactions)
   }
 }
