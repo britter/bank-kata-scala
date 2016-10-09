@@ -17,13 +17,20 @@
 package de.britter.bankkata
 
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
-class Clock {
+import org.scalatest.{ FlatSpec, Matchers }
 
-  val dd_MM_yyyy = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+class ClockTest extends FlatSpec with Matchers {
 
-  def todayAsString(): String = today().format(dd_MM_yyyy)
+  behavior of "a Clock"
 
-  protected def today(): LocalDate = LocalDate.now()
+  val clock: Clock = new TestableClock()
+
+  it should "return today in mm/dd/yyyy format" in {
+    clock.todayAsString() shouldBe "05/10/2016"
+  }
+
+  class TestableClock extends Clock {
+    override protected def today(): LocalDate = LocalDate.of(2016, 10, 5)
+  }
 }
