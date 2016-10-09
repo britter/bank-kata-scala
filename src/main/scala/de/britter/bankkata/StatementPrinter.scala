@@ -16,8 +16,36 @@
 
 package de.britter.bankkata
 
-class StatementPrinter {
+import java.text.{ DecimalFormat, DecimalFormatSymbols }
+import java.util.Locale
+import java.util.concurrent.atomic.AtomicInteger
 
-  def printLines(transactions: List[Transaction]): Unit = ???
+class StatementPrinter(console: Console) {
 
+  final val Header  = "DATE | AMOUNT | BALANCE"
+  val decimalFormat = new DecimalFormat("#.00")
+  decimalFormat.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.UK))
+
+  def printLines(transactions: List[Transaction]): Unit = {
+    console.print(Header)
+
+    printTransactions(transactions)
+  }
+
+  private def printTransactions(transactions: List[Transaction]) = {
+    val balance = new AtomicInteger(0)
+
+    transactions
+      .map(t => toStatement(t, balance))
+      .reverse
+      .foreach(console.print)
+  }
+
+  private def toStatement(transaction: Transaction, balance: AtomicInteger) = {
+    val formattedAmount = decimalFormat.format(transaction.amount)
+    val formattedBalance =
+      decimalFormat.format(balance.addAndGet(transaction.amount))
+
+    s"${transaction.date} | $formattedAmount | ${formattedBalance}"
+  }
 }

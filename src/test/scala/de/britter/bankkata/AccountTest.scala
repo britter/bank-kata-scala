@@ -24,7 +24,7 @@ class AccountTest extends FlatSpec with MockFactory {
   behavior of "an Account"
 
   val transactionRepository = stub[MockableTransactionRepository]
-  val statementPrinter      = stub[StatementPrinter]
+  val statementPrinter      = stub[MockableStatementPrinter]
 
   val transactions = List(Transaction("09/10/2016", 500))
 
@@ -51,4 +51,5 @@ class AccountTest extends FlatSpec with MockFactory {
   }
 
   class MockableTransactionRepository extends TransactionRepository(null)
+  class MockableStatementPrinter      extends StatementPrinter(null)
 }

@@ -14,35 +14,34 @@
  * limitations under the License.
  */
 
-package de.britter.bankkata.feature
+package de.britter.bankkata
 
-import de.britter.bankkata.{
-  Account,
-  Clock,
-  Console,
-  StatementPrinter,
-  TransactionRepository
-}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.FlatSpec
 
-class PrintStatementFeature extends FlatSpec with MockFactory {
+class StatementPrinterTest extends FlatSpec with MockFactory {
 
-  behavior of "an Account"
+  behavior of "a StatementPrinter"
+
+  val noTransactions = List[Transaction]()
 
   val console = stub[Console]
-  val clock   = stub[Clock]
 
-  val transactionRepository = new TransactionRepository(clock)
-  val statementPrinter      = new StatementPrinter(console)
-  val account               = new Account(transactionRepository, statementPrinter)
+  val statementPrinter = new StatementPrinter(console)
 
-  it should "print statements" in {
-    account.deposit(1000)
-    account.withdraw(100)
-    account.deposit(500)
+  it should "always print a header row" in {
+    statementPrinter.printLines(noTransactions)
 
-    account.printStatement()
+    (console.print _).verify("DATE | AMOUNT | BALANCE")
+  }
+
+  it should "print statements in reverse chronological order" in {
+    statementPrinter.printLines(
+      List(
+        Transaction("01/04/2014", 1000),
+        Transaction("02/04/2014", -100),
+        Transaction("10/04/2014", 500)
+      ))
 
     inSequence {
       (console.print _).verify("DATE | AMOUNT | BALANCE")
