@@ -16,11 +16,8 @@
 
 package de.britter.bankkata
 
-class Account {
+class Console {
 
-  def deposit(amount: Int): Unit = {}
+  def print(line: String): Unit = ???
 
-  def withdraw(amount: Int): Unit = {}
-
-  def printStatement(): Unit = {}
 }
