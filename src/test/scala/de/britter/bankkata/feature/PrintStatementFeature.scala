@@ -38,8 +38,11 @@ class PrintStatementFeature extends FlatSpec with MockFactory {
   val account               = new Account(transactionRepository, statementPrinter)
 
   it should "print statements" in {
+    (clock.todayAsString _).when().returns("01/04/2014").noMoreThanOnce()
     account.deposit(1000)
+    (clock.todayAsString _).when().returns("02/04/2014").noMoreThanOnce()
     account.withdraw(100)
+    (clock.todayAsString _).when().returns("10/04/2014").noMoreThanOnce()
     account.deposit(500)
 
     account.printStatement()

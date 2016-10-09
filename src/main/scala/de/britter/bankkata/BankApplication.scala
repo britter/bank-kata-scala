@@ -16,8 +16,19 @@
 
 package de.britter.bankkata
 
-class Console {
+object BankApplication {
 
-  def print(line: String): Unit = println(line)
+  def main(args: Array[String]): Unit = {
+    val clock                 = new Clock()
+    val transactionRepository = new TransactionRepository(clock)
+    val console               = new Console()
+    val statementPrinter      = new StatementPrinter(console)
+    val account               = new Account(transactionRepository, statementPrinter)
 
+    account.deposit(1000)
+    account.withdraw(400)
+    account.deposit(100)
+
+    account.printStatement()
+  }
 }
