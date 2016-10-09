@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-package de.britter.bankkata.feature
+package de.britter.bankkata
 
-import de.britter.bankkata.{ Account, Console, TransactionRepository }
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.FlatSpec
 
-class PrintStatementFeature extends FlatSpec with MockFactory {
+class AccountTest extends FlatSpec with MockFactory {
 
   behavior of "an Account"
 
-  val console = stub[Console]
+  val transactionRepository = stub[TransactionRepository]
 
-  val transactionRepository = new TransactionRepository()
-  val account               = new Account(transactionRepository)
+  val account = new Account(transactionRepository)
 
-  it should "print statements" in {
-    account.deposit(1000)
+  it should "store a deposit transaction" in {
+    account.deposit(100)
+
+    (transactionRepository.deposit _).verify(100)
+  }
+
+  it should "store a withdrawal transaction" in {
     account.withdraw(100)
-    account.deposit(500)
 
-    account.printStatement()
-
-    inSequence {
-      (console.print _).verify("DATE | AMOUNT | BALANCE")
-      (console.print _).verify("10/04/2014 | 500.00 | 1400.00")
-      (console.print _).verify("02/04/2014 | -100.00 | 900.00")
-      (console.print _).verify("01/04/2014 | 1000.00 | 1000.00")
-    }
+    (transactionRepository.withdraw _).verify(100)
   }
 }
