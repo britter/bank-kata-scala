@@ -16,4 +16,4 @@
 
 package de.britter.bankkata
 
-case class Transaction()
+case class Transaction(date: String, amount: Int)

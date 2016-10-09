@@ -16,16 +16,8 @@
 
 package de.britter.bankkata
 
-class TransactionRepository(clock: Clock) {
+class Clock {
 
-  var transactions = List[Transaction]()
-
-  def deposit(amount: Int): Unit =
-    transactions = transactions :+ Transaction(clock.todayAsString(), amount)
-
-  def withdraw(amount: Int): Unit =
-    transactions = transactions :+ Transaction(clock.todayAsString(), -amount)
-
-  def allTransactions(): List[Transaction] = transactions
+  def todayAsString(): String = ???
 
 }

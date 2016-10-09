@@ -18,6 +18,7 @@ package de.britter.bankkata.feature
 
 import de.britter.bankkata.{
   Account,
+  Clock,
   Console,
   StatementPrinter,
   TransactionRepository
@@ -30,8 +31,9 @@ class PrintStatementFeature extends FlatSpec with MockFactory {
   behavior of "an Account"
 
   val console = stub[Console]
+  val clock   = stub[Clock]
 
-  val transactionRepository = new TransactionRepository()
+  val transactionRepository = new TransactionRepository(clock)
   val statementPrinter      = new StatementPrinter()
   val account               = new Account(transactionRepository, statementPrinter)
 
